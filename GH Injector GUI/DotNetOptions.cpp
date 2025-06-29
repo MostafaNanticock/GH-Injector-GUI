@@ -3,9 +3,14 @@
  * Copyright:    Guided Hacking™ © 2012-2023 Guided Hacking LLC
  */
 
-#include "pch.h"
-
 #include "DotNetOptions.h"
+
+#include <QEvent>
+#include <QHBoxLayout>
+#include <QKeyEvent>
+#include <QLabel>
+#include <QPushButton>
+#include <QVBoxLayout>
 
 DotNetOptionsWindow::DotNetOptionsWindow(const QString &title, const QStringList &options, const DotNetOptionsTree *root, bool use_native,
                                          QWidget *parent) :
@@ -166,7 +171,7 @@ void DotNetOptionsWindow::GetResults(std::vector<QString> &results, bool &use_na
     use_native = m_UseNative;
 }
 
-void DotNetOptionsWindow::GetResult(QString &result, UINT index)
+void DotNetOptionsWindow::GetResult(QString &result, std::uint32_t index)
 {
     if (index < m_Results.size())
     {
@@ -284,9 +289,7 @@ DotNetOptionsTree::DotNetOptionsTree(const QString &option)
 DotNetOptionsTree::~DotNetOptionsTree()
 {
     for (auto &i : m_Nodes)
-    {
-        SAFE_DELETE(i);
-    }
+        delete i;
 }
 
 void DotNetOptionsTree::ParseData(const QString &Data)
