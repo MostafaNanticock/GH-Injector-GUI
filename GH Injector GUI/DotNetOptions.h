@@ -7,8 +7,6 @@
 
 #include "pch.h"
 
-#include "framelesswindow.h"
-
 class DotNetOptionsTree
 {
 	QString m_Option;
@@ -33,8 +31,6 @@ class DotNetOptionsWindow : public QDialog
 
 	const DotNetOptionsTree * m_pOptionsRoot;
 
-	FramelessWindow * m_FramelessParent = nullptr;
-
 	QComboBox * cmb_Namespace = nullptr;
 	QComboBox * cmb_Classname = nullptr;
 	QComboBox * cmb_Methodname = nullptr;
@@ -52,7 +48,6 @@ class DotNetOptionsWindow : public QDialog
 	
 public:
 	DotNetOptionsWindow(const QString & title, const QStringList & options, const DotNetOptionsTree * root, bool use_native = false, QWidget * parent = nullptr);
-	~DotNetOptionsWindow();
 
 	void GetResults(std::vector<QString> & results, bool & use_native);
 	void GetResult(QString & result, UINT index);
@@ -61,13 +56,9 @@ protected:
 	bool eventFilter(QObject * obj, QEvent * event) override;
 
 private slots:
-	void on_close_button_clicked();
 	void on_save_button_clicked();
 	void on_native_changed();
 
 	void on_namespace_change(int index);
 	void on_classname_change(int index);
-
-public slots:
-	void show();
 };
