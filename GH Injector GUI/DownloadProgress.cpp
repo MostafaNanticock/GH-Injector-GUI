@@ -1,11 +1,11 @@
 /*
  * Author:       Broihon
  * Copyright:    Guided Hacking™ © 2012-2023 Guided Hacking LLC
-*/
-
-#include "pch.h"
+ */
 
 #include "DownloadProgress.h"
+
+#include <wininet.h>
 
 DownloadProgress::~DownloadProgress()
 {
@@ -20,7 +20,7 @@ DownloadProgress::DownloadProgress(bool redownload)
     m_bRedownload = redownload;
 }
 
-HRESULT __stdcall DownloadProgress::QueryInterface(const IID & riid, void ** ppvObject)
+HRESULT __stdcall DownloadProgress::QueryInterface(const IID &riid, void **ppvObject)
 {
     UNREFERENCED_PARAMETER(riid);
     UNREFERENCED_PARAMETER(ppvObject);
@@ -38,7 +38,7 @@ ULONG __stdcall DownloadProgress::Release(void)
     return 1;
 }
 
-HRESULT __stdcall DownloadProgress::OnStartBinding(DWORD dwReserved, IBinding * pib)
+HRESULT __stdcall DownloadProgress::OnStartBinding(DWORD dwReserved, IBinding *pib)
 {
     UNREFERENCED_PARAMETER(dwReserved);
     UNREFERENCED_PARAMETER(pib);
@@ -46,7 +46,7 @@ HRESULT __stdcall DownloadProgress::OnStartBinding(DWORD dwReserved, IBinding * 
     return S_OK;
 }
 
-HRESULT __stdcall DownloadProgress::GetPriority(LONG * pnPriority)
+HRESULT __stdcall DownloadProgress::GetPriority(LONG *pnPriority)
 {
     UNREFERENCED_PARAMETER(pnPriority);
 
@@ -68,7 +68,7 @@ HRESULT __stdcall DownloadProgress::OnStopBinding(HRESULT hresult, LPCWSTR szErr
     return S_OK;
 }
 
-HRESULT __stdcall DownloadProgress::GetBindInfo(DWORD * grfBINDF, BINDINFO * pbindinfo)
+HRESULT __stdcall DownloadProgress::GetBindInfo(DWORD *grfBINDF, BINDINFO *pbindinfo)
 {
     UNREFERENCED_PARAMETER(grfBINDF);
     UNREFERENCED_PARAMETER(pbindinfo);
@@ -82,15 +82,15 @@ HRESULT __stdcall DownloadProgress::GetBindInfo(DWORD * grfBINDF, BINDINFO * pbi
 
         if (pbindinfo)
         {
-            pbindinfo->dwOptions        = BINDINFO_OPTIONS_WININETFLAG;
-            pbindinfo->dwOptionsFlags   = INTERNET_FLAG_PRAGMA_NOCACHE | INTERNET_FLAG_RELOAD;
+            pbindinfo->dwOptions = BINDINFO_OPTIONS_WININETFLAG;
+            pbindinfo->dwOptionsFlags = INTERNET_FLAG_PRAGMA_NOCACHE | INTERNET_FLAG_RELOAD;
         }
-    }    
+    }
 
     return S_OK;
 }
 
-HRESULT __stdcall DownloadProgress::OnDataAvailable(DWORD grfBSCF, DWORD dwSize, FORMATETC * pformatetc, STGMEDIUM * pstgmed)
+HRESULT __stdcall DownloadProgress::OnDataAvailable(DWORD grfBSCF, DWORD dwSize, FORMATETC *pformatetc, STGMEDIUM *pstgmed)
 {
     UNREFERENCED_PARAMETER(grfBSCF);
     UNREFERENCED_PARAMETER(dwSize);
@@ -100,7 +100,7 @@ HRESULT __stdcall DownloadProgress::OnDataAvailable(DWORD grfBSCF, DWORD dwSize,
     return S_OK;
 }
 
-HRESULT __stdcall DownloadProgress::OnObjectAvailable(const IID & riid, IUnknown * punk)
+HRESULT __stdcall DownloadProgress::OnObjectAvailable(const IID &riid, IUnknown *punk)
 {
     UNREFERENCED_PARAMETER(riid);
     UNREFERENCED_PARAMETER(punk);
@@ -117,43 +117,43 @@ HRESULT __stdcall DownloadProgress::OnProgress(ULONG ulProgress, ULONG ulProgres
         return E_ABORT;
     }
 
-	BINDSTATUS status = (BINDSTATUS)ulStatusCode;
+    BINDSTATUS status = (BINDSTATUS)ulStatusCode;
 
-	if (ulProgressMax)
-	{
-		m_fProgress = (float)ulProgress / ulProgressMax;
-	}
+    if (ulProgressMax)
+    {
+        m_fProgress = (float)ulProgress / ulProgressMax;
+    }
 
-	switch (status)
-	{
-		case BINDSTATUS::BINDSTATUS_CONNECTING:
-			m_sStatus = "Connecting to server...";
-			break;
+    switch (status)
+    {
+    case BINDSTATUS::BINDSTATUS_CONNECTING:
+        m_sStatus = "Connecting to server...";
+        break;
 
-		case BINDSTATUS::BINDSTATUS_BEGINDOWNLOADDATA:
-			m_sStatus = "Beginning download...";
-			break;
+    case BINDSTATUS::BINDSTATUS_BEGINDOWNLOADDATA:
+        m_sStatus = "Beginning download...";
+        break;
 
-		case BINDSTATUS::BINDSTATUS_DOWNLOADINGDATA:
-			m_sStatus = "Downloading...";
-			break;
+    case BINDSTATUS::BINDSTATUS_DOWNLOADINGDATA:
+        m_sStatus = "Downloading...";
+        break;
 
-		case BINDSTATUS::BINDSTATUS_ENDDOWNLOADDATA:
-			m_sStatus = "Download finished";
-			break;
-	}
+    case BINDSTATUS::BINDSTATUS_ENDDOWNLOADDATA:
+        m_sStatus = "Download finished";
+        break;
+    }
 
-	return S_OK;
+    return S_OK;
 }
 
 float DownloadProgress::GetDownloadProgress() const
 {
-	return m_fProgress;
+    return m_fProgress;
 }
 
 std::string DownloadProgress::GetStatusText() const
 {
-	return m_sStatus;
+    return m_sStatus;
 }
 
 BOOL DownloadProgress::SetInterruptEvent(HANDLE hInterrupt)
