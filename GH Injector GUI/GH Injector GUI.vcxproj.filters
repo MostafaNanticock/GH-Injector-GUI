@@ -4,13 +4,7 @@
     <ClCompile Include="CmdArg.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="DarkStyle.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="DownloadProgress.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="DragDropWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="GuiMain.cpp">
@@ -72,9 +66,6 @@
     <ClInclude Include="DownloadProgress.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="DragDropWindow.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="Injection.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -121,9 +112,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="DarkStyle.h">
-      <Filter>Headerdateien</Filter>
-    </QtMoc>
     <QtMoc Include="GuiMain.h">
       <Filter>Headerdateien</Filter>
     </QtMoc>

@@ -1,91 +1,65 @@
 /*
  * Author:       Broihon
  * Copyright:    Guided Hacking™ © 2012-2023 Guided Hacking LLC
-*/
+ */
 
 #include "pch.h"
 
 #include "CmdArg.h"
-#include "DarkStyle.h"
 #include "DebugConsole.h"
-#include "framelesswindow.h"
 #include "GuiMain.h"
+#include "framelesswindow.h"
 
 #pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:wmainCRTStartup")
 
-int wmain(int argc, wchar_t * argv[])
+int wmain(int argc, wchar_t *argv[])
 {
 #ifdef DEBUG_CONSOLE_TO_CMD
-	AllocConsole();
-	FILE * pFile = nullptr;
-	freopen_s(&pFile, "CONOUT$", "w", stdout);
+    AllocConsole();
+    FILE *pFile = nullptr;
+    freopen_s(&pFile, "CONOUT$", "w", stdout);
 #endif
 
-	if (argc > 1)
-	{
-		bool silent = false;
-		auto ret = CmdArg(argc, argv, silent);
+    if (argc > 1)
+    {
+        bool silent = false;
+        auto ret = CmdArg(argc, argv, silent);
 
-		if (silent)
-		{
-			return 0;
-		}
+        if (silent)
+            return 0;
 
-		if (ret != 0)
-		{
-			Sleep((DWORD)-1);
-		}
+        if (ret != 0)
+            Sleep((DWORD)-1);
 
-		Sleep(1500);
-		
-		return 0;
-	}
+        Sleep(1500);
 
-	auto s_argv = WCharArrayToStdString(argv[0]);
-	auto qt_argv = new char[s_argv.length() + 1]();
-	s_argv.copy(qt_argv, s_argv.length());
-		
-	SetProcessDPIAware();
+        return 0;
+    }
 
-	int currentExitCode = 0;
-	do
-	{
-		QApplication a(argc, &qt_argv);
+    std::vector<QByteArray> utf8Args;
+    std::vector<char *> argvUtf8;
 
-		QApplication::setWindowIcon(QIcon(":/GuiMain/gh_resource/GH Icon.ico"));
+    for (int i = 0; i < argc; ++i)
+    {
+        utf8Args.emplace_back(QString::fromWCharArray(argv[i]).toUtf8());
+        argvUtf8.push_back(utf8Args.back().data());
+    }
 
-		//DarkStyle * dark = new(std::nothrow) DarkStyle;
-		//if (dark == Q_NULLPTR)
-		//{
-		//	THROW("Failed to create window style.");
-		//}
+    argvUtf8.push_back(nullptr); // Null-terminate as expected by convention
 
-		//QApplication::setStyle(dark);
-		
-		GuiMain * MainWindow = new(std::nothrow) GuiMain();
-		if (MainWindow == Q_NULLPTR)
-		{
-			THROW("Failed to create main window.");
-		}
+    SetProcessDPIAware();
 
-		g_print("GH Injector V%ls\n", GH_INJ_GUI_VERSIONW.c_str());
-		g_print("Initializing GUI\n");
+    QApplication app(argc, argvUtf8.data());
+    QApplication::setWindowIcon(QIcon(":/GuiMain/gh_resource/GH Icon.ico"));
 
-		MainWindow->show();
+    GuiMain MainWindow;
+    MainWindow.show();
 
-		g_print("GUI initialized\n");
+    g_print("GH Injector V%ls\n", GH_INJ_GUI_VERSIONW.c_str());
+    g_print("Initializing GUI\n");
 
-		MainWindow->initSetup();
-		
-		currentExitCode = a.exec();
+    MainWindow.initSetup();
+    g_print("GUI initialized\n");
 
-		delete MainWindow;
-
-		printf("REBOOT\n");
-	} 
-	while (currentExitCode == GuiMain::EXIT_CODE_REBOOT);
-
-	delete[] qt_argv;
-
-	return currentExitCode;
+    return app.exec();
 }
