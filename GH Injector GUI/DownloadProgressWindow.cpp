@@ -7,7 +7,8 @@
 
 #include "DownloadProgressWindow.h"
 
-DownloadProgressWindow::DownloadProgressWindow(QString title, std::vector<QString>(labels), QString status, int width, QWidget *parent) :
+DownloadProgressWindow::DownloadProgressWindow(const QString &title, const std::vector<QString> &labels, const QString &status, int width,
+                                               QWidget *parent) :
     QDialog(parent)
 {
     auto *main_layout = new (std::nothrow) QVBoxLayout();

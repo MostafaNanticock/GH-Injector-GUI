@@ -1,61 +1,61 @@
 /*
  * Author:       Broihon
  * Copyright:    Guided Hacking™ © 2012-2023 Guided Hacking LLC
-*/
+ */
 
 #pragma once
 
-#include "pch.h"
-
 #include "InjectionLib.h"
+
+#include <QDialog>
 
 class DownloadProgressWindow : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	DownloadProgressWindow(QString title, std::vector<QString>(labels), QString status, int width, QWidget * parent = nullptr);
+    DownloadProgressWindow(const QString &title, const std::vector<QString> &labels, const QString &status, int width, QWidget *parent = nullptr);
 
 private:
-	std::vector<QProgressBar *>	m_ProgressBarList;
-	QLabel					 *	m_pStatus			= Q_NULLPTR;
+    std::vector<QProgressBar *> m_ProgressBarList;
+    QLabel *m_pStatus = Q_NULLPTR;
 
-	bool m_bRunning = false;
+    bool m_bRunning = false;
 
-	bool m_bUpdateStatus	= false;
-	bool m_bUpdateProgress	= false;
-	bool m_bUpdateDone		= false;
+    bool m_bUpdateStatus = false;
+    bool m_bUpdateProgress = false;
+    bool m_bUpdateDone = false;
 
-	QString				m_NewStatus = QString("");
-	std::vector<float>	m_NewProgress;
+    QString m_NewStatus;
+    std::vector<float> m_NewProgress;
 
-	int					m_NewDone			= 0;
-	int					m_CustomCloseValue	= 0;
+    int m_NewDone = 0;
+    int m_CustomCloseValue = 0;
 
-	bool	m_bTimerRunning	= false;
-	QTimer	m_TmrCallback;
+    bool m_bTimerRunning = false;
+    QTimer m_TmrCallback;
 
-	void * m_pCustomArg													= nullptr;
-	std::function<void(DownloadProgressWindow *, void *)> m_pCallback	= nullptr;
+    void *m_pCustomArg = nullptr;
+    std::function<void(DownloadProgressWindow *, void *)> m_pCallback = nullptr;
 
 private slots:
-	void on_timer_callback();
+    void on_timer_callback();
 
 protected:
-	bool eventFilter(QObject * obj, QEvent * event) override;
+    bool eventFilter(QObject *obj, QEvent *event) override;
 
 public:
-	void SetProgress(UINT index, float value);
-	void SetStatus(QString status);
-	void SetDone(int code);
+    void SetProgress(UINT index, float value);
+    void SetStatus(QString status);
+    void SetDone(int code);
 
-	void SetCallbackFrequency(int frequency);
-	void SetCallbackArg(void * argument);
-	void SetCallback(const decltype(m_pCallback) & callback);
+    void SetCallbackFrequency(int frequency);
+    void SetCallbackArg(void *argument);
+    void SetCallback(const decltype(m_pCallback) &callback);
 
-	void SetCloseValue(int value);
+    void SetCloseValue(int value);
 
-	int Execute();
+    int Execute();
 
-	QString GetStatus() const;
+    QString GetStatus() const;
 };
