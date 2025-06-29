@@ -390,11 +390,10 @@ xcopy /y $(QTDIR)\plugins\imageformats\qjpeg.dll "$(OutDir)imageformats\"</Comma
     <ClCompile Include="StatusBox.cpp" />
     <ClCompile Include="Update.cpp" />
     <ClCompile Include="Zip.cpp" />
-    <QtRcc Include="mainwindow.qrc" />
+    <QtRcc Include="resources.qrc" />
     <QtUic Include="GuiMain.ui" />
     <QtUic Include="GuiProcess.ui" />
     <QtUic Include="GuiScanHook.ui" />
-    <QtUic Include="framelesswindow.ui" />
     <ClCompile Include="CmdArg.cpp" />
     <ClCompile Include="GuiMain.cpp" />
     <ClCompile Include="GuiProcess.cpp" />

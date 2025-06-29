@@ -153,8 +153,6 @@ signals:
 private slots:
 	// Titlebar
 	void closeEvent(QCloseEvent * event) override;
-	void btn_close_clicked();
-	void btn_minimize_clicked();
 
 	// Settings
 	void rb_process_set();

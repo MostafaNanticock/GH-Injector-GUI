@@ -144,12 +144,6 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent)
 
     ui.cmb_proc->setModel(&mod_CmbProcNameModel);
 
-    auto banner_height = pxm_banner.height();
-    ui.btn_close->setFixedHeight(banner_height / 2);
-    ui.btn_minimize->setFixedHeight(banner_height / 2);
-    ui.btn_close->setFixedWidth(50);
-    ui.btn_minimize->setFixedWidth(50);
-
     ui.tree_files->setSizeAdjustPolicy(QAbstractScrollArea::SizeAdjustPolicy::AdjustIgnored);
     ui.tree_files->setColumnWidth(FILE_LIST_IDX_CHECKBOX, 50);
     ui.tree_files->setColumnWidth(FILE_LIST_IDX_NAME, 135);
@@ -179,10 +173,6 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent)
     tooltipsEnabled = true;
     setupDone = false;
     updateCheck = true;
-
-    // Window
-    connect(ui.btn_close, SIGNAL(clicked()), this, SLOT(btn_close_clicked()));
-    connect(ui.btn_minimize, SIGNAL(clicked()), this, SLOT(btn_minimize_clicked()));
 
     // Settings
     connect(ui.rb_proc, SIGNAL(clicked()), this, SLOT(rb_process_set()));
@@ -1387,18 +1377,6 @@ void GuiMain::btn_reset_settings()
 void GuiMain::reboot()
 {
     qApp->exit(GuiMain::EXIT_CODE_REBOOT);
-}
-
-void GuiMain::btn_close_clicked()
-{
-    save_settings();
-
-    qApp->exit(GuiMain::EXIT_CODE_CLOSE);
-}
-
-void GuiMain::btn_minimize_clicked()
-{
-    // framelessParent->on_minimizeButton_clicked();
 }
 
 void GuiMain::btn_hook_scan_click()

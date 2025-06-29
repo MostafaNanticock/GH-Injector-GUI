@@ -58,57 +58,6 @@
         </property>
        </spacer>
       </item>
-      <item row="0" column="5">
-       <layout class="QVBoxLayout" name="lay_button">
-        <item>
-         <widget class="QToolButton" name="btn_close">
-          <property name="styleSheet">
-           <string notr="true">#btn_close{
-  background-color:none;
-  border:none;
-  width:16px;
-  height:16px;
-  padding:0px;
-  image:url(:/images/icon_window_close.png);
-  border-top-right-radius: 5px;
-}
-#btn_close:hover{
-  background-color: rgb(232, 17, 35);
-}
-#btn_close:pressed{
-  background-color: rgb(241, 112, 122);
-}</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="btn_minimize">
-          <property name="styleSheet">
-           <string notr="true">#btn_minimize{
-  background-color:none;
-  border:none;
-  width:16px;
-  height:16px;
-  padding:4px;
-  image:url(:/images/icon_window_minimize.png);
-}
-#btn_minimize:hover{
-  background-color: rgb(102, 102, 102);
-}
-#btn_minimize:pressed{
-  background-color: rgb(136, 136, 136);
-}</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
       <item row="0" column="1">
        <layout class="QVBoxLayout" name="lay_header">
         <item>
@@ -1033,8 +982,8 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>560</width>
-            <height>150</height>
+            <width>258</width>
+            <height>258</height>
            </size>
           </property>
           <property name="sizeAdjustPolicy">
@@ -1252,7 +1201,6 @@
  <resources>
   <include location="GuiMain.qrc"/>
   <include location="darkstyle.qrc"/>
-  <include location="framelesswindow.qrc"/>
  </resources>
  <connections/>
 </ui>
