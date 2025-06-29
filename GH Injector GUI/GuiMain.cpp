@@ -217,16 +217,13 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent)
     connect(ui.btn_console, SIGNAL(clicked()), this, SLOT(btn_open_console()));
     connect(ui.btn_openlog, SIGNAL(clicked()), this, SLOT(btn_open_log()));
 
-    framelessScanner.setMinimizeButton(false);
-    framelessScanner.setResizeHorizontal(true);
-
     gui_Picker = new (std::nothrow) GuiProcess();
     if (gui_Picker == Q_NULLPTR)
     {
         THROW("Failed to create process picker window.");
     }
 
-    gui_Scanner = new (std::nothrow) GuiScanHook(&framelessScanner, &framelessScanner, &InjLib);
+    gui_Scanner = new (std::nothrow) GuiScanHook(nullptr, &InjLib);
     if (gui_Picker == Q_NULLPTR)
     {
         THROW("Failed to create hook scanner window.");
@@ -236,10 +233,9 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent)
     gui_Picker->setWindowIcon(QIcon(":/GuiMain/gh_resource/GH Icon.ico"));
     gui_Picker->setWindowModality(Qt::WindowModality::ApplicationModal);
 
-    framelessScanner.setWindowTitle("Scan for hooks");
-    framelessScanner.setContent(gui_Scanner);
-    framelessScanner.setWindowIcon(QIcon(":/GuiMain/gh_resource/GH Icon.ico"));
-    framelessScanner.setWindowModality(Qt::WindowModality::ApplicationModal);
+    gui_Scanner->setWindowTitle("Scan for hooks");
+    gui_Scanner->setWindowIcon(QIcon(":/GuiMain/gh_resource/GH Icon.ico"));
+    gui_Scanner->setWindowModality(Qt::WindowModality::ApplicationModal);
 
     auto Drop_Handler = [this](const QString &path) { add_file_to_list(path, true); };
 
@@ -1472,7 +1468,6 @@ void GuiMain::btn_minimize_clicked()
 
 void GuiMain::btn_hook_scan_click()
 {
-    framelessScanner.show();
     gui_Scanner->show();
 
     auto PID = ui.txt_pid->text().toULong();

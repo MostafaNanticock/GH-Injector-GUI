@@ -1,7 +1,7 @@
 /*
  * Author:       Broihon
  * Copyright:    Guided Hacking™ © 2012-2023 Guided Hacking LLC
-*/
+ */
 
 #pragma once
 
@@ -9,40 +9,38 @@
 
 #include "ui_GuiScanHook.h"
 
-#include "framelesswindow.h"
 #include "InjectionLib.h"
 #include "StatusBox.h"
+#include "framelesswindow.h"
 
 class GuiScanHook : public QWidget
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	GuiScanHook(QWidget * parent = Q_NULLPTR, FramelessWindow * FramelessParent = Q_NULLPTR, InjectionLib * InjectionLib = nullptr);
-	~GuiScanHook();
+    GuiScanHook(QWidget *parent = nullptr, InjectionLib *InjectionLib = nullptr);
 
 private:
-	Ui::Form ui;
+    Ui::Form ui;
 
-	FramelessWindow		* m_FramelessParent	= Q_NULLPTR;
-	QStringListModel	* m_Model			= Q_NULLPTR;
-	InjectionLib		* m_InjectionLib	= nullptr;
-	QStringList			m_HookList;
+    QStringListModel *m_Model = Q_NULLPTR;
+    InjectionLib *m_InjectionLib = nullptr;
+    QStringList m_HookList;
 
-	int m_PID = 0;
+    int m_PID = 0;
 
-	void setItem(const std::vector<std::wstring> & item);
-	std::vector<int> get_selected_indices() const;
+    void setItem(const std::vector<std::wstring> &item);
+    std::vector<int> get_selected_indices() const;
 
 signals:
-	void send_to_inj_sh();
+    void send_to_inj_sh();
 
 public slots:
-	void get_from_inj_to_sh(int PID);
+    void get_from_inj_to_sh(int PID);
 
 private slots:
-	void scan_clicked();
-	void unhook_clicked();
+    void scan_clicked();
+    void unhook_clicked();
 
-	void update_title(const QString title);
+    void update_title(const QString title);
 };
