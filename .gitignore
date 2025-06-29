@@ -13,3 +13,4 @@ GH Injector GUI/Settings.ini
 GH Injector GUI/GH_Inj_Log.txt
 GH .NET Parser/obj/publish/
 GH .NET Parser/bin/
+*.filters
