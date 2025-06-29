@@ -18,9 +18,7 @@ class DebugConsole : public QWidget
 	Q_OBJECT
 
 public:
-	DebugConsole(FramelessWindow * dock_parent = Q_NULLPTR, QWidget * parent = Q_NULLPTR);
-
-	~DebugConsole();
+	explicit DebugConsole(QWidget * parent = nullptr);
 
 	void open();
 	void close();
@@ -52,11 +50,6 @@ public:
 	void copy_data();
 
 private:
-	WindowDocker * m_Docker = nullptr;
-
-	FramelessWindow * m_FramelessParent = nullptr;
-	FramelessWindow * m_DockParent		= nullptr;
-
 	QListWidget * m_Content	= nullptr;
 	QGridLayout * m_Layout	= nullptr;
 

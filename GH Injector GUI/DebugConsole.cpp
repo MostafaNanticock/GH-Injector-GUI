@@ -7,7 +7,7 @@
 
 #include "DebugConsole.h"
 
-DebugConsole::DebugConsole(FramelessWindow * dock_parent, QWidget * parent)
+DebugConsole::DebugConsole(QWidget * parent)
 	: QWidget(parent)
 {
 	QSizePolicy policy;
@@ -38,71 +38,29 @@ DebugConsole::DebugConsole(FramelessWindow * dock_parent, QWidget * parent)
 	this->layout()->addWidget(m_Content);
 	this->installEventFilter(this);
 
-	m_FramelessParent = new(std::nothrow) FramelessWindow();
-	if (m_FramelessParent == Q_NULLPTR)
-	{
-		THROW("Failed to create parent window for debug console.");
-	}
-
-	m_FramelessParent->setMinimizeButton(false);
-	m_FramelessParent->setResizeHorizontal(true);
-	m_FramelessParent->setResizeBottom(true);
-	m_FramelessParent->setWindowTitle("Debug data");
-	m_FramelessParent->setContent(this);
-	m_FramelessParent->setWindowIcon(QIcon(":/GuiMain/gh_resource/GH Icon.ico"));
-	m_FramelessParent->resize(QSize(150, 350));
-
-	if (dock_parent)
-	{
-		m_DockParent = dock_parent;
-		m_FramelessParent->setDockButton(true, false, DOCK_RIGHT);
-		m_Docker = new(std::nothrow) WindowDocker(m_DockParent, m_FramelessParent);
-		if (m_Docker == Q_NULLPTR)
-		{
-			THROW("Failed to create window docker for debug console.");
-		}
-
-		m_Docker->SetDocking(true, true, true, true);
-		m_Docker->SetResizing(true, true);
-	}
-	else
-	{
-		m_Docker = nullptr;
-	}
-}
-
-DebugConsole::~DebugConsole()
-{
-	if (m_Docker)
-	{
-		delete m_Docker;
-	}
+	setWindowTitle("Debug data");
+	setWindowIcon(QIcon(":/GuiMain/gh_resource/GH Icon.ico"));
+	resize(QSize(150, 350));
 }
 
 void DebugConsole::open()
 {
-	if (m_FramelessParent->isMinimized())
-	{
-		m_FramelessParent->setWindowState(m_FramelessParent->windowState() & ~Qt::WindowMinimized);
-	}
-
-	m_FramelessParent->show();
-	SetWindowPos((HWND)m_FramelessParent->winId(), (HWND)m_DockParent->winId(), 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+    show();
 }
 
 void DebugConsole::close()
 {
-	m_FramelessParent->hide();
+    hide();
 }
 
 void DebugConsole::move(const QPoint & p)
 {
-	m_FramelessParent->move(p);
+	QWidget::move(p);
 }
 
 void DebugConsole::set_size(const QSize & s)
 {
-	m_FramelessParent->resize(s);
+	resize(s);
 }
 
 int DebugConsole::print(const char * format, ...)
@@ -239,17 +197,12 @@ void DebugConsole::print_raw(const char * szText)
 
 bool DebugConsole::is_open() const
 {
-	return (m_FramelessParent->isHidden() != true);
+	return !isHidden();
 }
 
 bool DebugConsole::is_docked() const
 {
-	if (!m_Docker)
-	{
-		return false;
-	}
-
-	return m_Docker->IsDocked();
+	return false;
 }
 
 void DebugConsole::print_raw_external(const char * szText)
@@ -317,42 +270,12 @@ void DebugConsole::update_external()
 
 void DebugConsole::dock()
 {
-	if (m_Docker)
-	{
-		m_Docker->Dock();
-	}
+
 }
 
 void DebugConsole::dock(int direction)
 {
-	if (m_Docker)
-	{
-		switch (direction)
-		{
-			case DOCK_RIGHT:
-				g_print("Console docked: right\n");
-				break;
 
-			case DOCK_LEFT:
-				g_print("Console docked: left\n");
-				break;
-
-			case DOCK_TOP:
-				g_print("Console docked: top\n");
-				break;
-
-			case DOCK_BOTTOM:
-				g_print("Console docked: bottom\n");
-				break;
-
-			default:
-				g_print("Invalid dock index specified\n");
-		}
-
-		m_Docker->Dock(direction);
-
-		m_Content->scrollToBottom();
-	}
 }
 
 void DebugConsole::copy_data()
@@ -388,21 +311,11 @@ void DebugConsole::copy_data()
 
 int DebugConsole::get_dock_index() const
 {
-	if (m_Docker)
-	{
-		return m_Docker->GetDockIndex();
-	}
-
 	return -1;
 }
 
 int DebugConsole::get_old_dock_index() const
 {
-	if (m_Docker)
-	{
-		return m_Docker->GetOldDockIndex();
-	}
-
 	return -1;
 }
 
@@ -428,11 +341,6 @@ bool DebugConsole::eventFilter(QObject * obj, QEvent * event)
 	}
 	else if (event->type() == QEvent::FocusIn)
 	{
-		if (!m_DockParent->isMinimized() && is_docked())
-		{
-			m_DockParent->setWindowState(m_DockParent->windowState() | Qt::WindowActive);
-			m_DockParent->activateWindow();
-		}
 	}
 
 	return QObject::eventFilter(obj, event);

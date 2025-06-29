@@ -87,7 +87,6 @@ private:
 
 	bool ignoreUpdate;
 	bool onReset;
-	bool onMove;
 	bool consoleOpen;
 	bool consoleFirst;
 	bool tooltipsEnabled;
@@ -96,8 +95,6 @@ private:
 	bool hijackWarning;
 
 	int dockIndex;
-
-	QPoint mouse_pos;
 
 	std::wstring newest_version;
 	std::wstring current_version;
