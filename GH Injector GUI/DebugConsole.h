@@ -11,6 +11,7 @@
 #include <QGridLayout>
 
 #include "framelesswindow.h"
+#include "WindowDocker.h"
 
 class DebugConsole : public QWidget
 {

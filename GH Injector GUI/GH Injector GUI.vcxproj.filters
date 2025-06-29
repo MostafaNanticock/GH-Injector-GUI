@@ -13,9 +13,6 @@
     <ClCompile Include="DragDropWindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="framelesswindow\framelesswindow.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="GuiMain.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -29,9 +26,6 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="mainwindow.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="framelesswindow\windowdragger.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Process.cpp">
@@ -68,6 +62,12 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="DotNetOptions.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="framelesswindow.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="windowdragger.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
@@ -127,9 +127,6 @@
     <QtMoc Include="DarkStyle.h">
       <Filter>Headerdateien</Filter>
     </QtMoc>
-    <QtMoc Include="framelesswindow\framelesswindow.h">
-      <Filter>Headerdateien</Filter>
-    </QtMoc>
     <QtMoc Include="GuiMain.h">
       <Filter>Headerdateien</Filter>
     </QtMoc>
@@ -140,9 +137,6 @@
       <Filter>Headerdateien</Filter>
     </QtMoc>
     <QtMoc Include="mainwindow.h">
-      <Filter>Headerdateien</Filter>
-    </QtMoc>
-    <QtMoc Include="framelesswindow\windowdragger.h">
       <Filter>Headerdateien</Filter>
     </QtMoc>
     <QtMoc Include="DownloadProgressWindow.h">
@@ -157,11 +151,14 @@
     <QtMoc Include="DotNetOptions.h">
       <Filter>Headerdateien</Filter>
     </QtMoc>
+    <QtMoc Include="framelesswindow.h">
+      <Filter>Headerdateien</Filter>
+    </QtMoc>
+    <QtMoc Include="windowdragger.h">
+      <Filter>Headerdateien</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="framelesswindow\framelesswindow.ui">
-      <Filter>UI</Filter>
-    </QtUic>
     <QtUic Include="GuiMain.ui">
       <Filter>UI</Filter>
     </QtUic>
@@ -208,6 +205,9 @@
   <ItemGroup>
     <QtRcc Include="mainwindow.qrc">
       <Filter>Ressourcendateien</Filter>
+    </QtRcc>
+    <QtRcc Include="framelesswindow.qrc">
+      <Filter>UI</Filter>
     </QtRcc>
   </ItemGroup>
 </Project>

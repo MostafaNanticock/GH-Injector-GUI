@@ -9,7 +9,7 @@ class FramelessWindow;
 
 #include "pch.h"
 
-#include "framelesswindow/framelesswindow.h"
+#include "framelesswindow.h"
 
 #define DOCK_NONE	-1
 #define DOCK_RIGHT	0

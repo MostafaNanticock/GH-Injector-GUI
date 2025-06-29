@@ -374,25 +374,10 @@ xcopy /y $(QTDIR)\plugins\imageformats\qjpeg.dll "$(OutDir)imageformats\"</Comma
   <ItemGroup>
     <ClCompile Include="DebugConsole.cpp" />
     <ClCompile Include="DotNetOptions.cpp" />
+    <ClCompile Include="framelesswindow.cpp" />
     <ClCompile Include="WindowDocker.cpp" />
     <ClCompile Include="DownloadProgress.cpp" />
     <ClCompile Include="DownloadProgressWindow.cpp" />
-    <ClCompile Include="framelesswindow\framelesswindow.cpp">
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\pch.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\pch.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Static|Win32'">..\pch.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\pch.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\pch.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Static|x64'">..\pch.h</PrecompiledHeaderFile>
-    </ClCompile>
-    <ClCompile Include="framelesswindow\windowdragger.cpp">
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\pch.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\pch.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Static|Win32'">..\pch.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\pch.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\pch.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Static|x64'">..\pch.h</PrecompiledHeaderFile>
-    </ClCompile>
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -407,13 +392,15 @@ xcopy /y $(QTDIR)\plugins\imageformats\qjpeg.dll "$(OutDir)imageformats\"</Comma
     <ClCompile Include="DragDropWindow.cpp" />
     <ClCompile Include="StatusBox.cpp" />
     <ClCompile Include="Update.cpp" />
+    <ClCompile Include="windowdragger.cpp" />
     <ClCompile Include="Zip.cpp" />
+    <QtRcc Include="framelesswindow.qrc" />
     <QtRcc Include="mainwindow.qrc" />
-    <QtUic Include="framelesswindow\framelesswindow.ui" />
     <QtUic Include="GuiMain.ui" />
     <QtUic Include="GuiProcess.ui" />
     <QtUic Include="GuiScanHook.ui" />
     <QtUic Include="mainwindow.ui" />
+    <QtUic Include="framelesswindow.ui" />
     <QtMoc Include="mainwindow.h" />
     <ClCompile Include="CmdArg.cpp" />
     <ClCompile Include="DarkStyle.cpp" />
@@ -444,18 +431,18 @@ xcopy /y $(QTDIR)\plugins\imageformats\qjpeg.dll "$(OutDir)imageformats\"</Comma
     <QtMoc Include="DotNetOptions.h" />
     <ClInclude Include="DownloadProgress.h" />
     <QtMoc Include="DownloadProgressWindow.h" />
+    <QtMoc Include="framelesswindow.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PDB_Download.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ShortCut.h" />
-    <QtMoc Include="framelesswindow\windowdragger.h" />
-    <QtMoc Include="framelesswindow\framelesswindow.h" />
     <ClInclude Include="Injection.h" />
     <ClInclude Include="InjectionLib.h" />
     <ClInclude Include="Process.h" />
     <ClInclude Include="DragDropWindow.h" />
     <ClInclude Include="StatusBox.h" />
     <ClInclude Include="Update.h" />
+    <QtMoc Include="windowdragger.h" />
     <ClInclude Include="Zip.h" />
     <QtMoc Include="GuiScanHook.h" />
     <QtMoc Include="GuiProcess.h" />

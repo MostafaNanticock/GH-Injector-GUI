@@ -13,7 +13,7 @@
 #include "DebugConsole.h"
 #include "DotNetOptions.h"
 #include "DragDropWindow.h"
-#include "framelesswindow/framelesswindow.h"
+#include "framelesswindow.h"
 #include "GuiProcess.h"
 #include "GuiScanHook.h"
 #include "Injection.h"

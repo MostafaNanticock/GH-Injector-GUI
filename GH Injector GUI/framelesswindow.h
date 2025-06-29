@@ -22,7 +22,6 @@
 
 class WindowDocker;
 
-#include "ui_framelesswindow.h"
 #include "..\WindowDocker.h"
 
 namespace Ui
