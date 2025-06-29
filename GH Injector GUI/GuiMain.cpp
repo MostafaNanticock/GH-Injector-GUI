@@ -18,25 +18,13 @@ const int GuiMain::Height_medium_b		= 593;
 const int GuiMain::Height_big			= 643;
 const int GuiMain::Height_change_delay	= 100;
 
-GuiMain::GuiMain(QWidget * parent)
-	: QMainWindow(parent)
+GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent)
 {
-	framelessParent = new(std::nothrow) FramelessWindow();
-	if (framelessParent == Q_NULLPTR)
-	{
-		THROW("Failed to create parent window for main GUI.");
-	}
-
-	framelessParent->setTitleBar(false);
-	framelessParent->setContent(this);
-
-	g_Console = new(std::nothrow) DebugConsole(framelessParent);
-	if (framelessParent == Q_NULLPTR)
+	g_Console = new(std::nothrow) DebugConsole(nullptr);
+    if (g_Console == nullptr)
 	{
 		THROW("Failed to create debug console.");
 	}
-
-	drag_drop = nullptr;
 
 	current_version = GH_INJ_GUI_VERSIONW;
 	newest_version	= GH_INJ_GUI_VERSIONW;
@@ -265,18 +253,9 @@ GuiMain::GuiMain(QWidget * parent)
 		add_file_to_list(path, true);
 	};
 
-	current_dpi = framelessParent->logicalDpiX();
+	current_dpi = logicalDpiX();
 	dragdrop_size	= (int)(30.0f * current_dpi / 96.0f + 0.5f);
 	dragdrop_offset = (int)(10.0f * current_dpi / 96.0f + 0.5f);
-
-	drag_drop = new(std::nothrow) DragDropWindow();
-	if (drag_drop == nullptr)
-	{
-		THROW("Failed to create drag & drop window.");
-	}
-
-	drag_drop->CreateDragDropWindow(reinterpret_cast<HWND>(framelessParent->winId()), dragdrop_size);
-	drag_drop->SetCallback(Drop_Handler);
 
 	// Process Picker
 	connect(this,		SIGNAL(send_to_picker(ProcessState *, ProcessData *)),	gui_Picker, SLOT(get_from_inj(ProcessState *, ProcessData *)));
@@ -357,7 +336,6 @@ GuiMain::~GuiMain()
 {
 	save_settings();
 
-	SAFE_DELETE(drag_drop);
 	SAFE_DELETE(gui_Scanner);
 	SAFE_DELETE(gui_Picker);
 	SAFE_DELETE(g_Console);
@@ -715,7 +693,6 @@ void GuiMain::update_after_height_change()
 {
 	auto pos = ui.tree_files->header()->pos();
 	pos = ui.tree_files->header()->mapToGlobal(pos);
-	drag_drop->SetPosition(pos.x() + ui.tree_files->width() - dragdrop_size - dragdrop_offset, pos.y() + ui.tree_files->height() - dragdrop_size - dragdrop_offset, false, true);
 
 	if (g_Console->is_open())
 	{
@@ -769,7 +746,7 @@ void GuiMain::dot_net_options()
 	auto parser = reinterpret_cast<DotNetOptionsTree *>(item->text(FILE_LIST_IDX_DOTNET_PARSER).toULong(&b_ok, 0x10));
 #endif
 
-	auto wnd = new(std::nothrow) DotNetOptionsWindow(QString("Enter .NET options"), old_options, parser, use_native, framelessParent);
+	auto wnd = new(std::nothrow) DotNetOptionsWindow(QString("Enter .NET options"), old_options, parser, use_native, this);
 	if (wnd == Q_NULLPTR)
 	{
 		g_print("Failed to open options window");
@@ -965,7 +942,7 @@ bool GuiMain::eventFilter(QObject * obj, QEvent * event)
 				}
 			}
 
-			if (g_Console->is_open() && !framelessParent->isMinimized())
+			if (g_Console->is_open() && !isMinimized())
 			{
 				auto * keyEvent = static_cast<QKeyEvent *>(event);
 				if (keyEvent->matches(QKeySequence::Copy) || keyEvent->matches(QKeySequence::Cut))
@@ -1038,119 +1015,49 @@ bool GuiMain::eventFilter(QObject * obj, QEvent * event)
 
 		case QEvent::Resize:
 		{
-			if (obj == ui.tree_files && !framelessParent->isMinimized())
-			{
-				if (drag_drop)
-				{
-					auto pos = ui.tree_files->header()->pos();
-					pos = ui.tree_files->header()->mapToGlobal(pos);
-					drag_drop->SetPosition(pos.x() + ui.tree_files->width() - dragdrop_size - dragdrop_offset, pos.y() + ui.tree_files->height() - dragdrop_size - dragdrop_offset, false, true);
-				}
-			}
 		}
 		break;
 
 		case QEvent::Move:
 		{
-			if (obj == framelessParent && drag_drop && !framelessParent->isMinimized())
-			{
-				auto pos = ui.tree_files->header()->pos();
-				pos = ui.tree_files->header()->mapToGlobal(pos);
-				drag_drop->SetPosition(pos.x() + ui.tree_files->width() - dragdrop_size - dragdrop_offset, pos.y() + ui.tree_files->height() - dragdrop_size - dragdrop_offset, false, true);
-			}
+
 		}
 		break;
 
 		case QEvent::WindowActivate:
 		{
-			if (obj == framelessParent)
-			{
-				auto pos = ui.tree_files->header()->pos();
-				pos = ui.tree_files->header()->mapToGlobal(pos);
-				drag_drop->SetPosition(pos.x() + ui.tree_files->width() - dragdrop_size - dragdrop_offset, pos.y() + ui.tree_files->height() - dragdrop_size - dragdrop_offset, false, true);
-			}
+
 		}
 		break;
 
 		case QEvent::WindowDeactivate:
 		{
-			if (obj == framelessParent)
-			{
-				auto pos = ui.tree_files->header()->pos();
-				pos = ui.tree_files->header()->mapToGlobal(pos);
-				drag_drop->SetPosition(pos.x() + ui.tree_files->width() - dragdrop_size - dragdrop_offset, pos.y() + ui.tree_files->height() - dragdrop_size - dragdrop_offset, false, false);
-			}
+
 		}
 		break;
 
 		case QEvent::ApplicationStateChange:
 		{
-			auto * ascEvent = static_cast<QApplicationStateChangeEvent *>(event);
-			if (ascEvent->applicationState() == Qt::ApplicationState::ApplicationActive && framelessParent->isVisible() && drag_drop)
-			{
-				auto pos = ui.tree_files->header()->pos();
-				pos = ui.tree_files->header()->mapToGlobal(pos);
 
-				if (!framelessParent->isMinimized())
-				{
-					drag_drop->SetPosition(pos.x() + ui.tree_files->width() - dragdrop_size - dragdrop_offset, pos.y() + ui.tree_files->height() - dragdrop_size - dragdrop_offset, false, false);
-				}
-			}
-			else
-			{
-				if (framelessParent->isMinimized() && drag_drop)
-				{
-					drag_drop->SetPosition(-1, -1, true, false);
-				}
-				else if (drag_drop)
-				{
-					auto pos = ui.tree_files->header()->pos();
-					pos = ui.tree_files->header()->mapToGlobal(pos);
-					drag_drop->SetPosition(pos.x() + ui.tree_files->width() - dragdrop_size - dragdrop_offset, pos.y() + ui.tree_files->height() - dragdrop_size - dragdrop_offset, false, false);
-				}
-			}
 		}
 		break;
 
 		case QEvent::WindowStateChange:
 		{
-			if (framelessParent->isMinimized() && drag_drop)
-			{
-				drag_drop->SetPosition(-1, -1, true, false);
-			}
+
 		}
 		break;
 
 		case QEvent::ScreenChangeInternal:
 		case QEvent::WindowChangeInternal:
 		{
-			if (current_dpi != framelessParent->logicalDpiX() && drag_drop)
-			{
-				update_height();
 
-				drag_drop->Close();
-
-				current_dpi = framelessParent->logicalDpiX();
-				dragdrop_size = (int)(30.0f * (float)current_dpi / 96.0f + 0.5f);
-				dragdrop_offset = (int)(10.0f * (float)current_dpi / 96.0f + 0.5f);
-
-				drag_drop->CreateDragDropWindow(reinterpret_cast<HWND>(framelessParent->winId()), dragdrop_size);
-
-				auto pos = ui.tree_files->header()->pos();
-				pos = ui.tree_files->header()->mapToGlobal(pos);
-				drag_drop->SetPosition(pos.x() + ui.tree_files->width() - dragdrop_size - dragdrop_offset, pos.y() + ui.tree_files->height() - dragdrop_size - dragdrop_offset, false, false);
-			}
 		}
 		break;
 
 		case QEvent::Close:
 		{
-			if (drag_drop)
-			{
-				drag_drop->SetPosition(-1, -1, false, true);
-			}
-
-			if (g_Console && (obj == this || obj == framelessParent))
+			if (g_Console && (obj == this || obj == this))
 			{
 				g_Console->close();
 			}
@@ -1186,10 +1093,10 @@ bool GuiMain::eventFilter(QObject * obj, QEvent * event)
 
 					if (delta.x() || delta.y())
 					{
-						auto newpos = framelessParent->pos() + delta;
+						auto newpos = pos() + delta;
 						mouse_pos = glb_mousepos;
 
-						framelessParent->move(newpos);
+						move(newpos);
 					}
 				}
 			}
@@ -1203,8 +1110,8 @@ bool GuiMain::eventFilter(QObject * obj, QEvent * event)
 				auto pos = this->mapToGlobal(QPoint(0, 0));
 				if (pos.y() < 0)
 				{
-					auto old_pos = framelessParent->pos();
-					framelessParent->move(old_pos.x(), old_pos.y() - pos.y() + 1);
+					auto old_pos = this->pos();
+					move(old_pos.x(), old_pos.y() - pos.y() + 1);
 				}
 
 				onMove = false;
@@ -1347,11 +1254,6 @@ void GuiMain::rb_unset_all()
 
 void GuiMain::btn_pick_process_click()
 {
-	if (drag_drop)
-	{
-		drag_drop->SetPosition(-1, -1, false, false);
-	}
-
 	framelessPicker.show();
 	gui_Picker->show();
 
@@ -1498,21 +1400,11 @@ void GuiMain::get_from_picker()
 	}
 
 	btn_change();
-
-	if (drag_drop)
-	{
-		drag_drop->SetPosition(-1, -1, false, true);
-	}
 }
 
 void GuiMain::get_from_scan_hook()
 {
 	framelessPicker.hide();
-
-	if (drag_drop)
-	{
-		drag_drop->SetPosition(-1, -1, false, true);
-	}
 }
 
 void GuiMain::cb_auto_inject()
@@ -1612,7 +1504,7 @@ void GuiMain::auto_loop_inject()
 
 void GuiMain::btn_reset_settings()
 {
-	if (!YesNoBox("Reset", "Are you sure you want to reset all settings?", framelessParent))
+	if (!YesNoBox("Reset", "Are you sure you want to reset all settings?", this))
 	{
 		return;
 	}
@@ -1642,16 +1534,11 @@ void GuiMain::btn_close_clicked()
 
 void GuiMain::btn_minimize_clicked()
 {
-	framelessParent->on_minimizeButton_clicked();
+	//framelessParent->on_minimizeButton_clicked();
 }
 
 void GuiMain::btn_hook_scan_click()
 {
-	if (drag_drop)
-	{
-		drag_drop->SetPosition(-1, -1, false, false);
-	}
-
 	framelessScanner.show();
 	gui_Scanner->show();
 
@@ -1669,23 +1556,23 @@ void GuiMain::update_height()
 
 	if (!b1 && !b2)
 	{
-		framelessParent->setFixedHeight(Height_small);
+		setFixedHeight(Height_small);
 	}
 	else if (b1 && !b2)
 	{
-		framelessParent->setFixedHeight(Height_medium_s);
+		setFixedHeight(Height_medium_s);
 	}
 	else if (!b1 && b2)
 	{
-		framelessParent->setFixedHeight(Height_medium_b);
+		setFixedHeight(Height_medium_b);
 	}
 	else
 	{
-		framelessParent->setFixedHeight(Height_big);
+		setFixedHeight(Height_big);
 	}
 
 	//force window update beacause it doesn't update properly when decreasing the size after launch but all the other times???
-	framelessParent->move(framelessParent->pos());
+	move(pos());
 
 	t_Update_DragDrop.start(Height_change_delay);
 }
@@ -1819,7 +1706,7 @@ void GuiMain::save_settings()
 
 	// Not visible
 	settings.setValue("LASTDIR", lastPathStr);
-	settings.setValue("GEOMETRY", framelessParent->saveGeometry());	
+	settings.setValue("GEOMETRY", saveGeometry());	
 
 	settings.endGroup();
 
@@ -1972,7 +1859,7 @@ void GuiMain::load_settings()
 
 	// Not visible
 	lastPathStr = settings.value("LASTDIR", "").toString();
-	framelessParent->restoreGeometry(settings.value("GEOMETRY").toByteArray());
+	restoreGeometry(settings.value("GEOMETRY").toByteArray());
 
 	auto old_second_count = settings.value("UPDATECHECK", 0).toLongLong();
 	auto current_second_count = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
@@ -2168,7 +2055,7 @@ void GuiMain::cb_hijack_clicked()
 {
 	if (hijackWarning && ui.cb_hijack->isChecked())
 	{
-		auto ret = YesNoBox("Warning", "This option will try to hijack a handle from another process\nwhich can be a system process.\nUnder rare circumstances this can cause a system crash.\nDo you want to enable this option anyway?", framelessParent, QMessageBox::Icon::Warning);
+		auto ret = YesNoBox("Warning", "This option will try to hijack a handle from another process\nwhich can be a system process.\nUnder rare circumstances this can cause a system crash.\nDo you want to enable this option anyway?", this, QMessageBox::Icon::Warning);
 		if (!ret)
 		{
 			ui.cb_hijack->setChecked(false);
@@ -3045,11 +2932,6 @@ bool GuiMain::get_icon_from_file(const std::wstring & path, UINT size, int index
 	return (pixmap.isNull() == false);
 }
 
-void GuiMain::show()
-{
-	framelessParent->show();
-}
-
 void GuiMain::btn_generate_shortcut()
 {
 	std::wstring shortCut;
@@ -3250,7 +3132,7 @@ void GuiMain::btn_generate_shortcut()
 		}
 	}
 
-	auto silent = YesNoBox("Silent mode", "Do you want the shortcut to be in silent mode?\nThis means that no console window will be spawned and\nthere will be no notifications on the injection status.", framelessParent);
+	auto silent = YesNoBox("Silent mode", "Do you want the shortcut to be in silent mode?\nThis means that no console window will be spawned and\nthere will be no notifications on the injection status.", this);
 	if (silent)
 	{
 		shortCut += L"-silent ";
@@ -3263,7 +3145,7 @@ void GuiMain::btn_generate_shortcut()
 	if (SUCCEEDED(hr))
 	{
 		QString msg = "The shortcut was created succesfully with the following name:\n" + fileName + "\n\nOpen shortcut location?";
-		if (YesNoBox("Success", "The shortcut was created succesfully with the following name:\n" + fileName + "\n\nDo you want to open the shortcut location?", framelessParent))
+		if (YesNoBox("Success", "The shortcut was created succesfully with the following name:\n" + fileName + "\n\nDo you want to open the shortcut location?", this))
 		{
 			//stolen from here:
 			//https://stackoverflow.com/questions/15300999/open-windows-explorer-directory-select-a-specific-file-in-delphi
@@ -3367,7 +3249,7 @@ void GuiMain::setup()
 
 		msg += "MB.\n\nDo you want to download the files now?";
 		
-		if (YesNoBox("PDB Download", msg, framelessParent))
+		if (YesNoBox("PDB Download", msg, this))
 		{
 			InjLib.StartDownload();
 			ShowPDBDownload(&InjLib);
@@ -3437,18 +3319,8 @@ void GuiMain::btn_update_clicked()
 		newest_version = get_newest_version();
 	}
 
-	if (drag_drop)
-	{
-		drag_drop->SetPosition(-1, -1, false, false);
-	}
-
 	if (update_injector(newest_version, ignoreUpdate, &InjLib))
 	{
 		qApp->exit(EXIT_CODE_UPDATE);
-	}
-
-	if (drag_drop)
-	{
-		drag_drop->SetPosition(-1, -1, false, true);
 	}
 }

@@ -46,8 +46,6 @@ int wmain(int argc, wchar_t * argv[])
 	s_argv.copy(qt_argv, s_argv.length());
 		
 	SetProcessDPIAware();
-	//QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-	//QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
 	int currentExitCode = 0;
 	do
@@ -56,13 +54,13 @@ int wmain(int argc, wchar_t * argv[])
 
 		QApplication::setWindowIcon(QIcon(":/GuiMain/gh_resource/GH Icon.ico"));
 
-		DarkStyle * dark = new(std::nothrow) DarkStyle;
-		if (dark == Q_NULLPTR)
-		{
-			THROW("Failed to create window style.");
-		}
+		//DarkStyle * dark = new(std::nothrow) DarkStyle;
+		//if (dark == Q_NULLPTR)
+		//{
+		//	THROW("Failed to create window style.");
+		//}
 
-		QApplication::setStyle(dark);
+		//QApplication::setStyle(dark);
 		
 		GuiMain * MainWindow = new(std::nothrow) GuiMain();
 		if (MainWindow == Q_NULLPTR)

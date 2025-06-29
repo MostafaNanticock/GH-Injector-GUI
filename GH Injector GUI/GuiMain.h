@@ -64,12 +64,9 @@ public:
 	static const int Height_medium_b;
 	static const int Height_big;
 	static const int Height_change_delay;
-	void show();
 
 private:
 	Ui::GuiMainClass ui;
-
-	FramelessWindow * framelessParent;
 
 	FramelessWindow framelessPicker;
 	FramelessWindow framelessScanner;
@@ -77,8 +74,6 @@ private:
 
 	GuiProcess	* gui_Picker;
 	GuiScanHook * gui_Scanner;
-
-	DragDropWindow * drag_drop;
 
 	ProcessState	proc_state;
 	ProcessData		proc_data_by_picker;
