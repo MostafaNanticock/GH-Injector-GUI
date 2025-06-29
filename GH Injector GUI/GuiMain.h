@@ -68,7 +68,6 @@ public:
 private:
 	Ui::GuiMainClass ui;
 
-	FramelessWindow framelessPicker;
 	FramelessWindow framelessScanner;
 	FramelessWindow framelessUpdate;
 

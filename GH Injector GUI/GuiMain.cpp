@@ -217,13 +217,10 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent)
     connect(ui.btn_console, SIGNAL(clicked()), this, SLOT(btn_open_console()));
     connect(ui.btn_openlog, SIGNAL(clicked()), this, SLOT(btn_open_log()));
 
-    framelessPicker.setMinimizeButton(false);
-    framelessPicker.setResizeHorizontal(true);
-
     framelessScanner.setMinimizeButton(false);
     framelessScanner.setResizeHorizontal(true);
 
-    gui_Picker = new (std::nothrow) GuiProcess(&framelessPicker, &framelessPicker);
+    gui_Picker = new (std::nothrow) GuiProcess();
     if (gui_Picker == Q_NULLPTR)
     {
         THROW("Failed to create process picker window.");
@@ -235,10 +232,9 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent)
         THROW("Failed to create hook scanner window.");
     }
 
-    framelessPicker.setWindowTitle("Select a process");
-    framelessPicker.setContent(gui_Picker);
-    framelessPicker.setWindowIcon(QIcon(":/GuiMain/gh_resource/GH Icon.ico"));
-    framelessPicker.setWindowModality(Qt::WindowModality::ApplicationModal);
+    gui_Picker->setWindowTitle("Select a process");
+    gui_Picker->setWindowIcon(QIcon(":/GuiMain/gh_resource/GH Icon.ico"));
+    gui_Picker->setWindowModality(Qt::WindowModality::ApplicationModal);
 
     framelessScanner.setWindowTitle("Scan for hooks");
     framelessScanner.setContent(gui_Scanner);
@@ -1192,7 +1188,6 @@ void GuiMain::rb_unset_all()
 
 void GuiMain::btn_pick_process_click()
 {
-    framelessPicker.show();
     gui_Picker->show();
 
     emit send_to_picker(&proc_state, &proc_data_by_picker);
@@ -1324,7 +1319,7 @@ void GuiMain::btn_change()
 
 void GuiMain::get_from_picker()
 {
-    framelessPicker.hide();
+    gui_Picker->hide();
 
     if (proc_data_by_picker.IsValid())
     {
@@ -1342,7 +1337,7 @@ void GuiMain::get_from_picker()
 
 void GuiMain::get_from_scan_hook()
 {
-    framelessPicker.hide();
+    gui_Picker->hide();
 }
 
 void GuiMain::cb_auto_inject()
