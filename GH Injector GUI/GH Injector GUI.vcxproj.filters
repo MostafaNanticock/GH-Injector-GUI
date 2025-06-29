@@ -25,9 +25,6 @@
     <ClCompile Include="InjectionLib.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="mainwindow.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Process.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -136,9 +133,6 @@
     <QtMoc Include="GuiScanHook.h">
       <Filter>Headerdateien</Filter>
     </QtMoc>
-    <QtMoc Include="mainwindow.h">
-      <Filter>Headerdateien</Filter>
-    </QtMoc>
     <QtMoc Include="DownloadProgressWindow.h">
       <Filter>Headerdateien</Filter>
     </QtMoc>
@@ -165,12 +159,10 @@
     <QtUic Include="GuiProcess.ui">
       <Filter>UI</Filter>
     </QtUic>
-    <QtUic Include="mainwindow.ui">
-      <Filter>UI</Filter>
-    </QtUic>
     <QtUic Include="GuiScanHook.ui">
       <Filter>UI</Filter>
     </QtUic>
+    <QtUic Include="framelesswindow.ui" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />

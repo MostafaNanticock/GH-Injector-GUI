@@ -12,8 +12,6 @@
 #include "CmdArg.h"
 #include "DebugConsole.h"
 #include "DotNetOptions.h"
-#include "DragDropWindow.h"
-#include "framelesswindow.h"
 #include "GuiProcess.h"
 #include "GuiScanHook.h"
 #include "Injection.h"
@@ -67,8 +65,6 @@ public:
 
 private:
 	Ui::GuiMainClass ui;
-
-	FramelessWindow framelessUpdate;
 
 	GuiProcess	* gui_Picker;
 	GuiScanHook * gui_Scanner;

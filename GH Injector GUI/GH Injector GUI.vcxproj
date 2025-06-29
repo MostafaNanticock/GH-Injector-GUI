@@ -399,16 +399,13 @@ xcopy /y $(QTDIR)\plugins\imageformats\qjpeg.dll "$(OutDir)imageformats\"</Comma
     <QtUic Include="GuiMain.ui" />
     <QtUic Include="GuiProcess.ui" />
     <QtUic Include="GuiScanHook.ui" />
-    <QtUic Include="mainwindow.ui" />
     <QtUic Include="framelesswindow.ui" />
-    <QtMoc Include="mainwindow.h" />
     <ClCompile Include="CmdArg.cpp" />
     <ClCompile Include="DarkStyle.cpp" />
     <ClCompile Include="GuiMain.cpp" />
     <ClCompile Include="GuiProcess.cpp" />
     <ClCompile Include="GuiScanHook.cpp" />
     <ClCompile Include="InjectionLib.cpp" />
-    <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="main.cpp">
       <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Static|x64'">input</DynamicSource>
       <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Static|x64'">%(Filename).moc</QtMocFileName>
