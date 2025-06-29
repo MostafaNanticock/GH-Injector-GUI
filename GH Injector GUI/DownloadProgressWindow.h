@@ -7,7 +7,6 @@
 
 #include "pch.h"
 
-#include "framelesswindow.h"
 #include "InjectionLib.h"
 
 class DownloadProgressWindow : public QDialog
@@ -17,11 +16,8 @@ class DownloadProgressWindow : public QDialog
 public:
 	DownloadProgressWindow(QString title, std::vector<QString>(labels), QString status, int width, QWidget * parent = nullptr);
 
-	~DownloadProgressWindow();
-
 private:
 	std::vector<QProgressBar *>	m_ProgressBarList;
-	FramelessWindow			 *	m_FramelessParent	= Q_NULLPTR;
 	QLabel					 *	m_pStatus			= Q_NULLPTR;
 
 	bool m_bRunning = false;
@@ -43,7 +39,6 @@ private:
 	std::function<void(DownloadProgressWindow *, void *)> m_pCallback	= nullptr;
 
 private slots:
-	void on_close_button_clicked();
 	void on_timer_callback();
 
 protected:
@@ -63,8 +58,4 @@ public:
 	int Execute();
 
 	QString GetStatus() const;
-	FramelessWindow * GetParent() const;
-
-public slots:
-	void show();
 };
