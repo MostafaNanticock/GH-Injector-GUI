@@ -15,6 +15,9 @@
 
 //modified by me >:]
 
+
+#include "windowdragger.h"
+
 #include "framelesswindow.h"
 
 FramelessWindow::FramelessWindow(QWidget * parent)

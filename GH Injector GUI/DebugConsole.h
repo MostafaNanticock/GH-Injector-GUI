@@ -7,6 +7,9 @@
 
 #include "pch.h"
 
+#include <QListWidget>
+#include <QGridLayout>
+
 #include "framelesswindow.h"
 
 class DebugConsole : public QWidget

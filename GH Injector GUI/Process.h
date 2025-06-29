@@ -11,6 +11,8 @@
 
 #define INVALID_SESSION_ID (ULONG)-1
 
+#include <TlHelp32.h>
+
 #include "pch.h"
 
 #include "DebugConsole.h"
