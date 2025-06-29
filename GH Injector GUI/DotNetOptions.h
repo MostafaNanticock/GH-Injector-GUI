@@ -31,17 +31,17 @@ class DotNetOptionsWindow : public QDialog
 
 	const DotNetOptionsTree * m_pOptionsRoot;
 
-	QComboBox * cmb_Namespace = nullptr;
-	QComboBox * cmb_Classname = nullptr;
-	QComboBox * cmb_Methodname = nullptr;
+	QComboBox cmb_Namespace;
+	QComboBox cmb_Classname;
+	QComboBox cmb_Methodname;
 
-	QLineEdit * txt_Namespace = nullptr;
-	QLineEdit * txt_Classname = nullptr;
-	QLineEdit * txt_Methodname = nullptr;
+	QLineEdit txt_Namespace;
+	QLineEdit txt_Classname;
+	QLineEdit txt_Methodname;
 
-	QLineEdit * txt_Argument = nullptr;
+	QLineEdit txt_Argument;
 
-	QCheckBox * cb_Entrypoint = nullptr;
+	QCheckBox cb_Entrypoint;
 
 	std::vector<QString> m_Results;
 	bool m_UseNative = false;
