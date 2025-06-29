@@ -70,15 +70,7 @@ bool update_injector(const std::wstring & newest_version, bool & ignore, Injecti
 {
 	std::wstring update_msg;
 
-	FramelessWindow parent;
-	parent.setMinimizeButton(false);
-	parent.setWindowIcon(QIcon(":/GuiMain/gh_resource/GH Icon.ico"));
-
-	QMessageBox * box = new(std::nothrow) QMessageBox(QMessageBox::Icon::Information, "", "", QMessageBox::StandardButton::Yes | QMessageBox::StandardButton::No, &parent, Qt::WindowType::FramelessWindowHint);
-	if (box == Q_NULLPTR)
-	{
-		THROW("Failed to create update dialog box.");
-	}
+	QMessageBox box(QMessageBox::Icon::Information, "", "", QMessageBox::StandardButton::Yes | QMessageBox::StandardButton::No);
 
 	int cmp = newest_version.compare(GH_INJ_GUI_VERSIONW);
 	if (cmp > 0)
@@ -88,8 +80,8 @@ bool update_injector(const std::wstring & newest_version, bool & ignore, Injecti
 		update_msg += L".\n";
 		update_msg += L"Do you want to update?";
 
-		parent.setWindowTitle("New version available");
-		box->addButton(QMessageBox::Ignore);
+		box.setWindowTitle("New version available");
+		box.addButton(QMessageBox::Ignore);
 	}
 	else if (cmp == 0)
 	{
@@ -97,28 +89,20 @@ bool update_injector(const std::wstring & newest_version, bool & ignore, Injecti
 		update_msg += GH_INJ_GUI_VERSIONW;
 		update_msg += L"?";
 
-		parent.setWindowTitle("Redownload");
+		box.setWindowTitle("Redownload");
 	}
 	else
 	{
 		StatusBox(false, "Something went wrong with the version check.\nYour version appears to be from the future.");
-		parent.close();
-		delete box;
+		box.close();
 
 		return false;
 	}
 
-	box->setText(QString::fromStdWString(update_msg));
-	box->setDefaultButton(QMessageBox::Yes);
+	box.setText(QString::fromStdWString(update_msg));
+	box.setDefaultButton(QMessageBox::Yes);
 
-	parent.setContent(box);
-	parent.setFixedWidth(box->width() + 40);
-	parent.show();
-	
-	auto res = box->exec();
-
-	parent.close();
-	delete box;
+	auto res = box.exec();
 
 	if (res == QMessageBox::No)
 	{

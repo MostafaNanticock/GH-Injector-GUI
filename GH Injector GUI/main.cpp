@@ -8,7 +8,6 @@
 #include "CmdArg.h"
 #include "DebugConsole.h"
 #include "GuiMain.h"
-#include "framelesswindow.h"
 
 #pragma comment(linker, "/SUBSYSTEM:WINDOWS /ENTRY:wmainCRTStartup")
 

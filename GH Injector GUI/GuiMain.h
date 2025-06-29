@@ -88,8 +88,6 @@ private:
 	bool updateCheck;
 	bool hijackWarning;
 
-	int dockIndex;
-
 	std::wstring newest_version;
 	std::wstring current_version;
 

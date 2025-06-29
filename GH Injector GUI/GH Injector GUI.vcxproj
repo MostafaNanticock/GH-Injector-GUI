@@ -374,8 +374,6 @@ xcopy /y $(QTDIR)\plugins\imageformats\qjpeg.dll "$(OutDir)imageformats\"</Comma
   <ItemGroup>
     <ClCompile Include="DebugConsole.cpp" />
     <ClCompile Include="DotNetOptions.cpp" />
-    <ClCompile Include="framelesswindow.cpp" />
-    <ClCompile Include="WindowDocker.cpp" />
     <ClCompile Include="DownloadProgress.cpp" />
     <ClCompile Include="DownloadProgressWindow.cpp" />
     <ClCompile Include="pch.cpp">
@@ -393,7 +391,6 @@ xcopy /y $(QTDIR)\plugins\imageformats\qjpeg.dll "$(OutDir)imageformats\"</Comma
     <ClCompile Include="Update.cpp" />
     <ClCompile Include="windowdragger.cpp" />
     <ClCompile Include="Zip.cpp" />
-    <QtRcc Include="framelesswindow.qrc" />
     <QtRcc Include="mainwindow.qrc" />
     <QtUic Include="GuiMain.ui" />
     <QtUic Include="GuiProcess.ui" />
@@ -422,11 +419,9 @@ xcopy /y $(QTDIR)\plugins\imageformats\qjpeg.dll "$(OutDir)imageformats\"</Comma
   <ItemGroup>
     <ClInclude Include="CmdArg.h" />
     <QtMoc Include="DebugConsole.h" />
-    <QtMoc Include="WindowDocker.h" />
     <QtMoc Include="DotNetOptions.h" />
     <ClInclude Include="DownloadProgress.h" />
     <QtMoc Include="DownloadProgressWindow.h" />
-    <QtMoc Include="framelesswindow.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PDB_Download.h" />
     <ClInclude Include="resource.h" />
@@ -444,7 +439,6 @@ xcopy /y $(QTDIR)\plugins\imageformats\qjpeg.dll "$(OutDir)imageformats\"</Comma
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
-    <None Include="frameless_window_dark.pro" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GH Injector GUI.rc" />

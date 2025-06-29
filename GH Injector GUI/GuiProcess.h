@@ -12,7 +12,6 @@
 #include "DebugConsole.h"
 #include "Process.h"
 #include "StatusBox.h"
-#include "framelesswindow.h"
 
 // don't want to include QWinExtras because of static build
 // but there's a problem with icon extraction returning invalid sizes so here we are

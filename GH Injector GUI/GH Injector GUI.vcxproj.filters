@@ -46,16 +46,10 @@
     <ClCompile Include="StatusBox.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="WindowDocker.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="PDB_Download.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="DotNetOptions.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
-    <ClCompile Include="framelesswindow.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="windowdragger.cpp">
@@ -127,13 +121,7 @@
     <QtMoc Include="DebugConsole.h">
       <Filter>Headerdateien</Filter>
     </QtMoc>
-    <QtMoc Include="WindowDocker.h">
-      <Filter>Headerdateien</Filter>
-    </QtMoc>
     <QtMoc Include="DotNetOptions.h">
-      <Filter>Headerdateien</Filter>
-    </QtMoc>
-    <QtMoc Include="framelesswindow.h">
       <Filter>Headerdateien</Filter>
     </QtMoc>
     <QtMoc Include="windowdragger.h">
@@ -154,9 +142,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
-    <None Include="frameless_window_dark.pro">
-      <Filter>UI</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headerdateien">
@@ -185,9 +170,6 @@
   <ItemGroup>
     <QtRcc Include="mainwindow.qrc">
       <Filter>Ressourcendateien</Filter>
-    </QtRcc>
-    <QtRcc Include="framelesswindow.qrc">
-      <Filter>UI</Filter>
     </QtRcc>
   </ItemGroup>
 </Project>

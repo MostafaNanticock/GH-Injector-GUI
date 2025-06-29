@@ -275,11 +275,6 @@ GuiMain::GuiMain(QWidget *parent) : QMainWindow(parent)
     cmb_peh_change(0);
     btn_tooltip_change();
 
-    if (dockIndex == DOCK_NONE)
-    {
-        dockIndex = DOCK_RIGHT;
-    }
-
     if (!g_IsNative)
     {
         // Won't work if not native
@@ -938,66 +933,6 @@ bool GuiMain::eventFilter(QObject *obj, QEvent *event)
             if (keyEvent->matches(QKeySequence::Copy) || keyEvent->matches(QKeySequence::Cut))
             {
                 g_Console->copy_data();
-            }
-            else if (keyEvent->modifiers() & Qt::KeyboardModifier::ControlModifier)
-            {
-                int new_index = DOCK_NONE;
-
-                switch (keyEvent->key())
-                {
-                case Qt::Key_3:
-                case Qt::Key_Right:
-                    new_index = DOCK_RIGHT;
-                    break;
-
-                case Qt::Key_1:
-                case Qt::Key_Left:
-                    new_index = DOCK_LEFT;
-                    break;
-                case Qt::Key_5:
-                case Qt::Key_Up:
-                    new_index = DOCK_TOP;
-                    break;
-
-                case Qt::Key_2:
-                case Qt::Key_Down:
-                    new_index = DOCK_BOTTOM;
-                    break;
-
-                default:
-                    break;
-                }
-
-                bool ignore = false;
-                if ((ui.cmb_proc->hasFocus() || ui.txt_pid->hasFocus()) && (new_index == DOCK_RIGHT || new_index == DOCK_LEFT))
-                {
-                    auto pos = 0;
-                    auto len = 0;
-
-                    if (ui.cmb_proc->hasFocus())
-                    {
-                        pos = ui.cmb_proc->lineEdit()->cursorPosition();
-                        len = ui.cmb_proc->lineEdit()->text().length();
-                    }
-                    else
-                    {
-                        pos = ui.txt_pid->cursorPosition();
-                        len = ui.txt_pid->text().length();
-                    }
-
-                    if (pos != len && new_index == DOCK_RIGHT || pos != 0 && new_index == DOCK_LEFT)
-                    {
-                        ignore = true;
-                    }
-                }
-
-                if (!ignore && new_index != DOCK_NONE && new_index != g_Console->get_dock_index())
-                {
-                    dockIndex = new_index;
-                    g_Console->dock(dockIndex);
-
-                    return true; // don't send keypress to main gui to not move focus to different control
-                }
             }
         }
     }
@@ -1781,7 +1716,6 @@ void GuiMain::load_settings()
     // Info
     tooltipsEnabled = !settings.value("TOOLTIPSON", true).toBool();
     consoleOpen = settings.value("CONSOLE", true).toBool();
-    dockIndex = settings.value("DOCKINDEX", DOCK_RIGHT).toInt();
     ignoreUpdate = settings.value("IGNOREUPDATES", false).toBool();
     hijackWarning = settings.value("HIJACKWARNING", true).toBool();
 
@@ -1814,7 +1748,6 @@ void GuiMain::default_settings()
     ui.txt_pid->setText("1337");
     ignoreUpdate = false;
     tooltipsEnabled = false;
-    dockIndex = DOCK_RIGHT;
     proc_state.cbSession = true;
     hijackWarning = true;
 
@@ -3197,25 +3130,7 @@ void GuiMain::btn_generate_shortcut()
 
 void GuiMain::btn_open_console()
 {
-    g_Console->open();
-
-    if (g_Console->get_dock_index() == DOCK_NONE)
-    {
-        int old_idx = g_Console->get_old_dock_index();
-
-        if (old_idx == DOCK_NONE)
-        {
-            old_idx = dockIndex;
-        }
-
-        if (old_idx == -1)
-        {
-            old_idx = DOCK_RIGHT;
-            dockIndex = DOCK_RIGHT;
-        }
-
-        g_Console->dock(old_idx);
-    }
+    g_Console->show();
 
     consoleOpen = true;
 }

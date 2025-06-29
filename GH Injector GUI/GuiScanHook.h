@@ -11,7 +11,6 @@
 
 #include "InjectionLib.h"
 #include "StatusBox.h"
-#include "framelesswindow.h"
 
 class GuiScanHook : public QWidget
 {

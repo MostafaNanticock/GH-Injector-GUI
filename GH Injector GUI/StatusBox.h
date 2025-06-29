@@ -5,10 +5,8 @@
 
 #pragma once
 
-#include "pch.h"
-
-#include "framelesswindow.h"
+#include <QMessageBox>
 
 void StatusBox(bool ok, const QString & msg);
 
-bool YesNoBox(const QString & title, const QString & msg, QWidget * parent = Q_NULLPTR, QMessageBox::Icon icon = QMessageBox::Icon::Question);
+bool YesNoBox(const QString & title, const QString & msg, QWidget * parent = nullptr, QMessageBox::Icon icon = QMessageBox::Icon::Question);
